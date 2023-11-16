@@ -1,76 +1,73 @@
-const express = require('express');
-const fs = require('fs');
-const multer = require('multer');
+const express = require("express");
+const fs = require("fs");
+const multer = require("multer");
 const app = express();
 const port = 8000;
 
-
 app.use(multer().none());
 app.use(express.json());
-app.use(express.static('static')); 
+app.use(express.static("static"));
 
-
-const notesFilePath = 'notes.json';
-
+const notesFilePath = "notes.json";
 
 if (!fs.existsSync(notesFilePath)) {
-    fs.writeFileSync(notesFilePath, '[]', 'utf8');
+    fs.writeFileSync(notesFilePath, "[]", "utf8");
 }
 
-
 const readNotesFromFile = () => {
-    const data = fs.readFileSync(notesFilePath, 'utf8');
+    const data = fs.readFileSync(notesFilePath, "utf8");
     return JSON.parse(data);
 };
 
-
 const writeNotesToFile = (notes) => {
-    fs.writeFileSync(notesFilePath, JSON.stringify(notes, null, 2), 'utf8');
+    fs.writeFileSync(notesFilePath, JSON.stringify(notes, null, 2), "utf8");
 };
 
 app.get("/UploadForm", (req, res) => {
-    res.sendFile(__dirname + '/static/UploadForm.html');
+    res.sendFile(__dirname + "/static/UploadForm.html");
 });
 
-app.get('/notes', (req, res) => {
+app.get("/notes", (req, res) => {
     try {
         const notes = readNotesFromFile();
-        res.json({ notes });
+        res.json({notes});
     } catch (err) {
-        res.status(500).send('Internal Server Error');
+        res.status(500).send("Internal Server Error");
     }
 });
 
-app.post('/upload', (req, res) => {
+app.post("/upload", (req, res) => {
     const addedNoteName = req.body.note_name;
     const addedNoteText = req.body.note;
 
     try {
         const notes = readNotesFromFile();
 
-        const existNote = notes.find(note => note.note_name === addedNoteName);
+        const existNote = notes.find(
+            (note) => note.note_name === addedNoteName
+        );
 
         if (existNote) {
-            throw new Error('Note with this name already exists');
+            throw new Error("Note with this name already exists");
         }
 
-        notes.push({ note_name: addedNoteName, note: addedNoteText });
+        notes.push({note_name: addedNoteName, note: addedNoteText});
         writeNotesToFile(notes);
-        res.status(201).send('Note successfully created');
+        res.status(201).send("Note successfully created");
     } catch (error) {
         res.status(400).send(error.message);
     }
 });
 
-app.get('/notes/:note_name', (req, res) => {
+app.get("/notes/:note_name", (req, res) => {
     const note_name = req.params.note_name;
 
     try {
         const notes = readNotesFromFile();
-        const findNote = notes.find(note => note.note_name === note_name);
+        const findNote = notes.find((note) => note.note_name === note_name);
 
         if (!findNote) {
-            throw new Error('Note with this name does not exist');
+            throw new Error("Note with this name does not exist");
         }
 
         res.send(findNote.note);
@@ -79,40 +76,44 @@ app.get('/notes/:note_name', (req, res) => {
     }
 });
 
-app.put('/notes/:note_name', (req, res) => {
+app.put("/notes/:note_name", (req, res) => {
     const note_name = req.params.note_name;
     const note_text = req.body.note;
 
     try {
         const notes = readNotesFromFile();
-        const foundNoteIndex = notes.findIndex(note => note.note_name === note_name);
+        const foundNoteIndex = notes.findIndex(
+            (note) => note.note_name === note_name
+        );
 
         if (foundNoteIndex === -1) {
-            throw new Error('Note with this name does not exist');
+            throw new Error("Note with this name does not exist");
         }
 
         notes[foundNoteIndex].note = note_text;
         writeNotesToFile(notes);
-        res.status(200).json({ note_name, note: note_text });
+        res.status(200).send("Text was updated");
     } catch (error) {
         res.status(404).send(error.message);
     }
 });
 
-app.delete('/notes/:note_name', (req, res) => {
+app.delete("/notes/:note_name", (req, res) => {
     const note_name = req.params.note_name;
 
     try {
         const notes = readNotesFromFile();
-        const foundNoteIndex = notes.findIndex(note => note.note_name === note_name);
+        const foundNoteIndex = notes.findIndex(
+            (note) => note.note_name === note_name
+        );
 
         if (foundNoteIndex === -1) {
-            throw new Error('Note with this name does not exist');
+            throw new Error("Note with this name does not exist");
         }
 
         notes.splice(foundNoteIndex, 1);
         writeNotesToFile(notes);
-        res.status(200).send('Note deleted');
+        res.status(200).send("Note deleted");
     } catch (error) {
         res.status(404).send(error.message);
     }
