@@ -54,12 +54,12 @@
 					"formdata": [
 						{
 							"key": "note_name",
-							"value": "note3",
+							"value": "note4",
 							"type": "text"
 						},
 						{
 							"key": "note",
-							"value": "some text for third note",
+							"value": "some text for fourth note",
 							"type": "text"
 						}
 					]
@@ -168,14 +168,8 @@
 				"method": "PUT",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "note",
-							"value": "updated text",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "updated text"
 				},
 				"url": {
 					"raw": "http://localhost:8000/notes/note2",
