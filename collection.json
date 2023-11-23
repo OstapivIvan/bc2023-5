@@ -169,7 +169,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "updated text"
+					"raw": "new text"
 				},
 				"url": {
 					"raw": "http://localhost:8000/notes/note2",
