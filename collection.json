@@ -92,23 +92,9 @@
 		},
 		{
 			"name": "findNameNote",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "note",
-							"value": "",
-							"type": "text",
-							"disabled": true
-						}
-					]
-				},
 				"url": {
 					"raw": "http://localhost:8000/notes/note1",
 					"protocol": "http",
