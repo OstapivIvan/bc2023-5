@@ -76,27 +76,6 @@ app.get("/notes/:note_name", (req, res) => {
     }
 });
 
-/* app.put("/notes/:note_name", (req, res) => {
-    const note_name = req.params.note_name;
-    const note_text = req.body.note;
-
-    try {
-        const notes = readNotesFromFile();
-        const foundNoteIndex = notes.findIndex(
-            (note) => note.note_name === note_name
-        );
-
-        if (foundNoteIndex === -1) {
-            throw new Error("Note with this name does not exist");
-        }
-
-        notes[foundNoteIndex].note = note_text;
-        writeNotesToFile(notes);
-        res.status(200).send("Text was updated");
-    } catch (error) {
-        res.status(404).send(error.message);
-    }
-}); */
 
 app.put('/notes/:note_name', express.text(), (req, res) => {
     const note_name = req.params.note_name;
@@ -106,7 +85,7 @@ app.put('/notes/:note_name', express.text(), (req, res) => {
     const noteToUpdate = notes.find((data) => data.note_name === note_name);
 
     if (noteToUpdate) {
-        noteToUpdate.note_text = updatedNoteText; 
+        noteToUpdate.note = updatedNoteText; 
         writeNotesToFile(notes);
         res.status(200).send('Text was updated');
     } else {
