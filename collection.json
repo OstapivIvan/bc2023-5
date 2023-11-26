@@ -73,18 +73,6 @@
 					"port": "8000",
 					"path": [
 						"upload"
-					],
-					"query": [
-						{
-							"key": "note_name",
-							"value": "2",
-							"disabled": true
-						},
-						{
-							"key": "note",
-							"value": "3",
-							"disabled": true
-						}
 					]
 				}
 			},
